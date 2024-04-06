@@ -1,6 +1,6 @@
-import logo from './logo.svg';
 import './App.css';
 import MusicEditor from './MusicEditor';
+import MusicEditorClick from './MusicEditorClick';
 
 function App() {
   return (

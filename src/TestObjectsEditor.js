@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import Vex, { Formatter } from 'vexflow';
 import * as d3 from 'd3';
 
-const MusicEditor = () => {
+const TestObjectsEditor = () => {
     const notationRef = useRef(null);
     const [selectedNote, setSelectedNote] = useState(null);
     const stave1 = useRef(null);
@@ -46,21 +46,22 @@ const MusicEditor = () => {
             context.current = renderer.getContext();
 
             stave1.current = new VF.Stave(10, 40, 400);
-            stave1.current.addClef("bass").addTimeSignature("4/4");
+            stave1.current.addClef("treble").addTimeSignature("4/4");
             stave1.current.setContext(context.current).draw();
 
-            let defaultWholeRest = new VF.StaveNote({ keys: ["d/5"], duration: "1r"});
-            let note = new VF.StaveNote({ keys: ["C/4"], duration: "q"});
             const notes = [
-                new VF.StaveNote({ keys: ["C/4"], duration: "q"}),
-                new VF.StaveNote({ keys: ["C/4"], duration: "q"}),
-                new VF.StaveNote({ keys: ["C/4"], duration: "q"}),
-                new VF.StaveNote({ keys: ["C/4"], duration: "q"})
+                new VF.StaveNote({ keys: ["C/4"], duration: "q" }),
+                new VF.StaveNote({ keys: ["D/4"], duration: "q" }),
+                new VF.StaveNote({ keys: ["E/4"], duration: "q" }),
+                new VF.StaveNote({ keys: ["F/4"], duration: "q" })
             ];
 
             const voice = new VF.Voice({ num_beats: 4}).addTickables(notes);
             console.log(voice.getTickables());
             voicesStave1.push(voice);
+            renderVoices(stave1.current);
+            voice.getTickables()[0].keys = ["F/4"];
+            console.log("keys: " + voice.getTickables()[0].keys)
             renderVoices(stave1.current);
         }
 
@@ -100,4 +101,4 @@ const MusicEditor = () => {
     </div>;
 };
 
-export default MusicEditor;
+export default TestObjectsEditor;
