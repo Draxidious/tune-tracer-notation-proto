@@ -1,11 +1,12 @@
 import './App.css';
 import MusicEditor from './MusicEditor';
+import TestObjectsEditor from './TestObjectsEditor';
 import MusicEditorClick from './MusicEditorClick';
 
 function App() {
   return (
     <div>
-      <MusicEditor />
+      <TestObjectsEditor />
     </div>
   );
 }

@@ -95,7 +95,7 @@ const MusicEditor = () => {
             
         </div>
         <div>
-            <button onClick={renderNotation2}>Click me</button>
+            <button onClick={renderNotation2}>Add Voice</button>
         </div>
     </div>;
 };

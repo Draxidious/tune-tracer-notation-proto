@@ -1,52 +1,70 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Vex, { Formatter } from 'vexflow';
 
-const Measure = {
-    VF: Vex.Flow,
-    stave: null,
-    num_total_beats: 0,
-    num_beats: 0,
-    beat_value: 0,
+export class Measure {
+    VF = Vex.Flow;
+    stave = null;
+    context = null;
+    num_beats = 0;
+    beat_value = 0;
+    width = 0;
+    height = 0;
     /* 
         Measure will use timesignature to figure out how many beats you have to have before you need
         a new voice. 
     */
-    
-    voices: [],
-    constructor(x, y, width) {
-        stave = new VF.Stave(x, y, width);
-       
-    },
-    setTimeSignature: function(/*string*/ timeSignature) {
-        stave.setTimeSignature(timeSignature);
+    voice1 = null;
+    constructor(context, x, y, width, timeSignature = "none", clef = "none") {
+        this.stave = new this.VF.Stave(x, y, width);
+        this.width = width;
+        this.height = this.stave.getHeight();
+        this.context = context;
+        console.log("Context in Measure: " + context);
+        if(timeSignature != "none")
+        {
+            this.setTimeSignature(timeSignature);
+        }
+        console.log("Numbeats: " + this.num_beats);
+        if(clef != "none")
+        {
+            this.setClef(clef);
+        }
+        let defaultWholeRest = new this.VF.StaveNote({ keys: ["d/5"], duration: "wr"});
+        const notes = [
+            defaultWholeRest.setXShift(40)
+        ];
+
+        this.voice1 = new this.VF.Voice({ num_beats: this.num_beats, beat_value: this.beat_value}).addTickables(notes);
+        this.stave.setContext(context).draw();
+        this.renderVoices();
+    }
+
+    setTimeSignature = function(/*string*/ timeSignature) {
+        this.stave.setTimeSignature(timeSignature);
         let arr = timeSignature.split("/");
-        this.num_total_beats = parseInt(arr[0]);
+        this.num_beats = parseInt(arr[0]);
         this.beat_value = parseInt(arr[1]);
-    },
-    setClef: function(/*string*/ clef) {
-        stave.setClef(clef);
-    },
-    addNote: function(/*string[]*/keys, /*string*/ duration, /*int*/ beat)
+    }
+
+    setClef = function(/*string*/ clef) {
+        this.stave.setClef(clef);
+    }
+
+    addNote = function(/*string[]*/keys, /*string*/ duration, /*int*/ beat)
     {
         // When adding a note you never want to override another note
         // However, if the StaveNote you are overriding is a REST, then override
-    },
-    getCurrentBeats: function()
-    {
-        return num_beats;
-    },
-    addDefaultRest: function()
-    {
-        defaultWholeRest = new VF.StaveNote({ keys: ["d/5"], duration: "wr"});
-        const notes = [
-            defaultWholeRest.setXShift(width/4)
-        ];
+    }
 
-        const voice = new VF.Voice({ num_beats: this.num_beats, beat_value: this.beat_value}).addTickables(notes);
-        voicesStave1.push(voice);
-        renderVoices(stave1.current);
+    getCurrentBeats = function()
+    {
+        return this.num_beats;
+    }
+
+    renderVoices = function()
+    {
+        new this.VF.Formatter().format([this.voice1], this.width);
+        this.voice1.draw(this.context, this.stave);
     }
 
   };
-  
-  export default Measure;
