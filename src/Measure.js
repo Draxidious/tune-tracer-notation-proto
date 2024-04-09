@@ -29,9 +29,12 @@ export class Measure {
         {
             this.setClef(clef);
         }
-        let defaultWholeRest = new this.VF.StaveNote({ keys: ["d/5"], duration: "wr"});
+        let defaultQRest = new this.VF.StaveNote({ keys: ["d/5"], duration: "qr"});
         const notes = [
-            defaultWholeRest.setXShift(40)
+            new this.VF.StaveNote({ keys: ["b/4"], duration: "qr"}),
+            new this.VF.StaveNote({ keys: ["b/4"], duration: "qr"}),
+            new this.VF.StaveNote({ keys: ["b/4"], duration: "qr"}),
+            new this.VF.StaveNote({ keys: ["b/4"], duration: "qr"})
         ];
 
         this.voice1 = new this.VF.Voice({ num_beats: this.num_beats, beat_value: this.beat_value}).addTickables(notes);
@@ -63,7 +66,7 @@ export class Measure {
 
     renderVoices = function()
     {
-        new this.VF.Formatter().format([this.voice1], this.width);
+        new this.VF.Formatter().format([this.voice1], this.width - 25);
         this.voice1.draw(this.context, this.stave);
     }
 

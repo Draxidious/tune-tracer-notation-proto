@@ -13,7 +13,10 @@ const TestObjectsEditor = () => {
         }
 
         const renderNotation = () => {
-           let score = new Score(notationRef.current, 10, 40, 200);
+            // It seems that the measure width is separate from how
+            // the formatter width works with voices. Subtracting 25 at when formatting helps the
+            // notes fit better with a smaller staff. 
+           let score = new Score(notationRef.current, /*defaultx*/10, /*defaulty*/40, /*Measure Width*/325);
         }
 
         clearSVG();
