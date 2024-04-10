@@ -5,6 +5,11 @@ import {Score} from './Score.js';
 
 const TestObjectsEditor = () => {
     const notationRef = useRef(null);
+    const score = useRef(null);
+    const addNote = () =>
+    {
+        score.current.addNoteInMeasure(/*measure index*/ 0, /*keys*/["C/4","D/4"],/*duration*/"q", /*noteId*/"auto1016");
+    }
     useEffect(() => {
         const clearSVG = () => {
             if (notationRef.current) {
@@ -16,7 +21,7 @@ const TestObjectsEditor = () => {
             // It seems that the measure width is separate from how
             // the formatter width works with voices. Subtracting 25 at when formatting helps the
             // notes fit better with a smaller staff. 
-           let score = new Score(notationRef.current, /*defaultx*/10, /*defaulty*/40, /*Measure Width*/325);
+           score.current = new Score(notationRef.current, /*defaultx*/10, /*defaulty*/40, /*Measure Width*/325);
         }
 
         clearSVG();
@@ -29,7 +34,7 @@ const TestObjectsEditor = () => {
             
         </div>
         <div>
-            <button>Click me</button>
+            <button onClick={addNote}>Add two notes on second beat</button>
         </div>
     </div>;
 };

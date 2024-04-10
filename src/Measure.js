@@ -53,10 +53,45 @@ export class Measure {
         this.stave.setClef(clef);
     }
 
-    addNote = function(/*string[]*/keys, /*string*/ duration, /*int*/ beat)
+    addNote = function(/*string[]*/keys, /*string*/ duration, /*string*/ noteId)
     {
+        let VF = Vex.Flow;
+        let notes = [];
+        
+        this.voice1.getTickables().forEach(function (staveNote){
+           console.log(staveNote);
+           if(staveNote.attrs.id == noteId)
+           {
+             // If staveNote is not a rest, then we add to the chord
+             if(staveNote.noteType != 'r')
+             {
+                let newKeys = staveNote.getKeys();
+                keys.forEach(function(key){
+                    // We don't want repeat keys
+                    if(!newKeys.includes(key)) newKeys.push(key);
+                 });
+                notes.push( new VF.StaveNote({ keys: newKeys, duration: duration}));
+             }
+             // If the staveNote is a rest, then we replace it
+             else
+             {
+                // Replace since its a rest
+                notes.push( new VF.StaveNote({ keys: keys, duration: duration}));
+             } 
+             
+           }
+           else
+           {
+             notes.push(staveNote);
+           }
+           let svgNote = document.getElementById('vf-'+staveNote.attrs.id);
+           //console.log(staveNote.attrs.id);
+           svgNote.remove();
+        });
+        this.voice1 = new VF.Voice({ num_beats: this.num_beats, beat_value: this.beat_value}).addTickables(notes);
+        this.renderVoices();
         // When adding a note you never want to override another note
-        // However, if the StaveNote you are overriding is a REST, then override
+        // However, if the StaveNote you are overriding is at REST, then override
     }
 
     getCurrentBeats = function()

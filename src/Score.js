@@ -16,5 +16,10 @@ export class Score {
         this.measures.push(firstMeasure);
     }
 
+    addNoteInMeasure = function(measureIndex, keys, duration, noteId)
+    {
+        this.measures[measureIndex].addNote(keys, duration, noteId);
+    }
+
   };
   
